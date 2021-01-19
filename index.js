@@ -27,14 +27,14 @@ const enterEmployee = () => {
         },
       },
       {
-        type: "input",
+        type: "number",
         name: "id",
         message: "What is your employee's id?",
         validate: (id) => {
-          if (id) {
+          if (id === Number && id) {
             return true;
           } else {
-            console.log("Please enter your employee's id");
+            console.log("Please enter your employee's id in numeric form");
             return false;
           }
         },
@@ -63,82 +63,51 @@ const enterEmployee = () => {
         type: "input",
         name: "github",
         message: "Please enter github username for this employee.",
-        when: (answers) => {
-          answers.role === "Engineer";
-        },
-        validate: (github) => {
-          if (github) {
-            return true;
-          } else {
-            console.log("Please enter the github username for this employee.");
-            return false;
-          }
-        },
+        when: answers => answers.role === "Engineer",
       },
       //intern prompt
       {
         type: "input",
         name: "school",
         message: "What school did this employee go to?",
-        when: (answers) => {
-          answers.role === "Intern";
-        },
-        validate: (school) => {
-          if (school) {
-            return true;
-          } else {
-            console.log(
-              "Please enter the name of the school this employee went to."
-            );
-            return false;
-          }
-        },
+        when: answers => answers.role === "Intern",
       },
       //manager prompt question
       {
         type: "number",
         name: "officeNumber",
         message: `What is employee's office number?`,
-        when: (answers) => {
-          answers.role === "Manager";
+        when: answers => answers.role === "Manager"
         },
-        validate: (officeNumber) => {
-          if (officeNumber === Number && officeNumber) {
-            return true;
-          } else {
-            console.log("Please make sure your entry is a number");
-            return false;
-          }
-        },
-      },
     ])
     .then((answers) => {
-      switch (answers) {
-        case "Engineer":
+      if (answers.role === "Engineer")  {
           const engineer = new Engineer(
             answers.name,
             answers.id,
             answers.email,
             answers.github
           );
-          finalArray.push(manager);
-        case "Intern":
-          const intern = new Intern(
+          finalArray.push(eningeer);
+      } else if (answers.role === "Intern") {
+        const intern = new Intern(
             answers.name,
             answers.id,
             answers.email,
             answers.school
           );
-          finalArray.push(intern);
-        case "Manager":
-          const manager = new Manager(
+          finalArray.push(manager);
+      } else if (answers.role === "Manager") {
+        const manager = new Manager(
             answers.name,
             answers.id,
             answers.email,
             answers.officeNumber
           );
           finalArray.push(manager);
-      }
+      };
+
+      // ask user if they would like to use another employee
       inquirer
         .prompt({
           type: "confirm",
@@ -149,7 +118,7 @@ const enterEmployee = () => {
         .then(({ addAnotherEmployee }) => {
           if (!addAnotherEmployee) {
             console.log("Thank you, your employee has been sucessfully added.");
-            createCard();
+            createCard(finalArray);
           } else {
             enterEmployee();
           }
@@ -161,30 +130,29 @@ const enterEmployee = () => {
 const roleInfo = (employee) => {
   switch (employee.getRole()) {
     case "Intern":
-        return `School: ${employee.getSchool()}`;
+      return `School: ${employee.getSchool()}`;
     case "Eningeer":
-        return `Github: ${employee.getGithub()}`;
+      return `Github: ${employee.getGithub()}`;
     case "Manager":
-        return `Office number: ${employee.getOfficeNumber()}`;
+      return `Office number: ${employee.getOfficeNumber()}`;
   }
 };
 
 //function that will call the methods in appropriate places in order to create a card for each employee
-const createCard = employees => {
-    //create an empty array to store the card info in
+const createCard = (employees) => {
+  //create an empty array to store the card info in
   const cardArray = [];
   //for each employee create a card
   employees.forEach((employee) => {
-    const employeeCard = 
-    `
+    const employeeCard = `
         <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
             <div class="card-header">${employee.getName()}</div>
                 <div class="card-body">
                     <h5 class="card-title">${employee.getRole()}</h5>
-                        <ul class="card-text">
-                            <li>ID: ${employee.getId()}</li>
-                            <li>Email: <a href ="mailto: ${employee.getEmail()}">${employee.getEmail()}</li>
-                            <li>${roleInfo}</li>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">ID: ${employee.getId()}</li>
+                            <li class="list-group-item">Email: <a href ="mailto: ${employee.getEmail()}">${employee.getEmail()}</li>
+                            <li class="list-group-item">${roleInfo}</li>
                         </ul>
                 </div>
             </div>
@@ -192,11 +160,17 @@ const createCard = employees => {
     `;
     //and push this card to the card array
     cardArray.push(employeeCard);
+    //us fs to write the file
+    generateHTML(cardArray);
   });
 };
 
-const generateHTML = cards => {
-    fs.copyFile('./src/template.html', './dist/index.html', err => {
-        if (err) throw err;
-    })
-}
+const generateHTML = cardArray => {
+  fs.copyFile("./src/template.html", "./dist/index.html", (err) => {
+    if (err) throw err;
+  });
+
+  fs.appendFile("");
+};
+
+enterEmployee();
