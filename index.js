@@ -47,7 +47,7 @@ const enterEmployee = () => {
         type: "list",
         name: "role",
         message: "What is this employee's role?",
-        choices: ["Manager", "Eningeer", "Intern"],
+        choices: ["Manager", "Engineer", "Intern"],
       },
       //engineer prompt
       {
@@ -122,7 +122,7 @@ const roleInfo = (employee) => {
   switch (employee.getRole()) {
     case "Intern":
       return `School: ${employee.getSchool()}`;
-    case "Eningeer":
+    case "Engineer":
       return `Github: ${employee.getGithub()}`;
     case "Manager":
       return `Office number: ${employee.getOfficeNumber()}`;
@@ -147,10 +147,12 @@ const createCard = (employees) => {
   //for each employee create a card
   employees.forEach((employee) => {
     const employeeCard = `
-        <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+        <div class="card text-dark bg-light" style="max-width: 18rem;">
             <div class="card-header">${employee.getName()}</div>
                 <div class="card-body">
-                    <h5 class="card-title">${icon(employee)}  ${employee.getRole()}</h5>
+                    <h4 class="card-title">${icon(
+                      employee
+                    )}  ${employee.getRole()}</h4>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">ID: ${employee.getId()}</li>
                             <li class="list-group-item">Email: <a href ="mailto: ${employee.getEmail()}">${employee.getEmail()}</a></li>
@@ -164,7 +166,6 @@ const createCard = (employees) => {
     `;
     //and push this card to the card array
     cardArray.push(employeeCard);
-
     //us fs to write the file
     generateHTML(cardArray);
   });
