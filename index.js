@@ -119,26 +119,26 @@ const enterEmployee = () => {
 
 //function that gets right info to put on the employee's card according to what role they are
 const roleInfo = (employee) => {
-    switch (employee.getRole()) {
-      case "Intern":
-        return `School: ${employee.getSchool()}`;
-      case "Eningeer":
-        return `Github: ${employee.getGithub()}`;
-      case "Manager":
-        return `Office number: ${employee.getOfficeNumber()}`;
-    }
-  };
-  
-  const icon = (employee) => {
-    switch (employee.getRole()) {
-      case "Intern":
-        return ` <i class="fas fa-user-graduate"></i>`;
-      case "Manager":
-        return `<i class="fas fa-mug-hot"></i>`;
-      case "Engineer":
-        return `<i class="fas fa-glasses"></i>`;
-    }
-  };
+  switch (employee.getRole()) {
+    case "Intern":
+      return `School: ${employee.getSchool()}`;
+    case "Eningeer":
+      return `Github: ${employee.getGithub()}`;
+    case "Manager":
+      return `Office number: ${employee.getOfficeNumber()}`;
+  }
+};
+
+const icon = (employee) => {
+  switch (employee.getRole()) {
+    case "Intern":
+      return ` <i class="fas fa-user-graduate"></i>`;
+    case "Manager":
+      return `<i class="fas fa-mug-hot"></i>`;
+    case "Engineer":
+      return `<i class="fas fa-glasses"></i>`;
+  }
+};
 
 //function that will call the methods in appropriate places in order to create a card for each employee
 const createCard = (employees) => {
@@ -150,11 +150,13 @@ const createCard = (employees) => {
         <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
             <div class="card-header">${employee.getName()}</div>
                 <div class="card-body">
-                    <h5 class="card-title">${icon(employee)}${employee.getRole()}</h5>
+                    <h5 class="card-title">${icon(employee)}  ${employee.getRole()}</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">ID: ${employee.getId()}</li>
-                            <li class="list-group-item">Email: <a href ="mailto: ${employee.getEmail()}">${employee.getEmail()}</li>
-                            <li class="list-group-item">${roleInfo(employee)}</li>
+                            <li class="list-group-item">Email: <a href ="mailto: ${employee.getEmail()}">${employee.getEmail()}</a></li>
+                            <li class="list-group-item">${roleInfo(
+                              employee
+                            )}</li>
                         </ul>
                 </div>
             </div>
@@ -167,7 +169,6 @@ const createCard = (employees) => {
     generateHTML(cardArray);
   });
 };
-
 
 const generateHTML = (cardArray) => {
   fs.copyFile("./src/template.html", "./dist/index.html", (err) => {
