@@ -123,7 +123,7 @@ const roleInfo = (employee) => {
     case "Intern":
       return `School: ${employee.getSchool()}`;
     case "Engineer":
-      return `Github: ${employee.getGithub()}`;
+      return `Github: <a href= "www.github.com/${employee.getGithub()}">${employee.getGithub()}</a>`;
     case "Manager":
       return `Office number: ${employee.getOfficeNumber()}`;
   }
@@ -147,16 +147,16 @@ const createCard = (employees) => {
   //for each employee create a card
   employees.forEach((employee) => {
     const employeeCard = `
-        <div class="card text-dark bg-light" style="max-width: 18rem;">
+        <div class="card border-primary mb-3">
             <div class="card-header">${employee.getName()}</div>
                 <div class="card-body">
                     <h4 class="card-title">${icon(
                       employee
                     )}  ${employee.getRole()}</h4>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">ID: ${employee.getId()}</li>
-                            <li class="list-group-item">Email: <a href ="mailto: ${employee.getEmail()}">${employee.getEmail()}</a></li>
-                            <li class="list-group-item">${roleInfo(
+                        <ul class="list-group list-group-flush text-primary">
+                            <li class="list-group-item text-primary">ID: ${employee.getId()}</li>
+                            <li class="list-group-item text-primary">Email: <a href ="mailto: ${employee.getEmail()}">${employee.getEmail()}</a></li>
+                            <li class="list-group-item text-primary">${roleInfo(
                               employee
                             )}</li>
                         </ul>
@@ -164,20 +164,21 @@ const createCard = (employees) => {
             </div>
         </div>
     `;
-    //and push this card to the card array
-    cardArray.push(employeeCard);
+     //and push this card to the card array
+     cardArray.push(employeeCard);
+  });
+    //Add the closing divs to the file
+
     //us fs to write the file
     generateHTML(cardArray);
-  });
 };
 
 const generateHTML = (cardArray) => {
   fs.copyFile("./src/template.html", "./dist/index.html", (err) => {
     if (err) throw err;
-  });
-
-  fs.appendFile("./dist/index.html", cardArray.join(""), (err) => {
-    if (err) throw err;
+    fs.appendFile("./dist/index.html", cardArray.join(""), (err) => {
+        if (err) throw err;
+      });
   });
 };
 
