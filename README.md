@@ -10,12 +10,12 @@ Make sure to have `node` installed.
 In order to use this application, fork and clone the repo and open in VS-code. Open up the terminal and navigate to the root directory. Run the command `node index`. Then answer the prompted questions, and once you are finished your result will be in the `dist` folder under `index.html`.
 
 ### Screenshot
-![Screenshot](screenshot.png)
 ![Screenshot2](screenshot2.png)
+![Screenshot](screenshot.png)
 
 ## Tech Used
 * Node.js
-* npm inquirer
+* NPM Inquirer
 * Jest
 * JavaScript
     * Object Orriented Programming
